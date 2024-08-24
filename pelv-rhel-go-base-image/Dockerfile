@@ -1,4 +1,4 @@
-FROM registry.access.redhat.com/ubi8/ubi:latest as base_mage
+FROM registry.access.redhat.com/ubi8/ubi:latest AS base_mage
 
 # Install Node.js and npm
 RUN yum install -y \
@@ -7,12 +7,9 @@ RUN yum install -y \
     curl \
     && yum clean all
 
-# Download and install Oracle Java 22 LTS
-RUN curl -fsSL -o /tmp/jdk-22_linux-x64_bin.tar.gz https://download.oracle.com/java/22/latest/jdk-22_linux-x64_bin.tar.gz \
-&& tar -C /usr/local -xzf /tmp/jdk-22_linux-x64_bin.tar.gz \
-&& rm /tmp/jdk-22_linux-x64_bin.tar.gz \
-&& ln -s /usr/local/jdk-22/bin/java /usr/bin/java \
-&& ln -s /usr/local/jdk-22/bin/javac /usr/bin/javac
+# Install Java Runtime Environment (JRE) for OpenAPI Generator CLI
+RUN yum install -y java-11-openjdk \
+    && yum clean all
 
 # Install Node.js and npm from NodeSource repository
 # Use NodeSource to get the latest Node.js version
